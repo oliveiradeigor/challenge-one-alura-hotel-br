@@ -8,6 +8,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import modelo.Registros;
 import modelo.Reservas;
 import org.mariadb.jdbc.Statement;
 
@@ -15,29 +16,32 @@ import org.mariadb.jdbc.Statement;
  *
  * @author igor
  */
-public class ReservaDAO {
+public class RegistroDAO {
 
     private Connection connection;
 
-    public ReservaDAO(Connection connection) {
+    public RegistroDAO(Connection connection) {
         this.connection = connection;
     }
 
-    public void salvar(Reservas reservas) {
+    public void salvar(Registros registro) {
         try {
-            String sql = "INSERT INTO reservas (data_entrada, data_saida, valor, forma_pagamento) VALUES(?,?,?,?)";
+            String sql = "INSERT INTO hospedes (nome, sobrenome, data_nascimento, nacionalidade, telefone, reservas_id) VALUES (?,?,?,?,?,?)";
 
             try (PreparedStatement pst = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                pst.setDate(1, reservas.getDataEntrada());
-                pst.setDate(2, reservas.getDataSaida());
-                pst.setInt(3, reservas.getValor());
-                pst.setString(4, reservas.getFormaPagamento());
+                pst.setString(1, registro.getNome());
+                pst.setString(2, registro.getSobrenome());
+                pst.setDate(3, registro.getDataNascimento());
+                pst.setString(4, registro.getNacionalidade());
+                pst.setString(5, registro.getTelefone());
+                pst.setInt(6, registro.getReservas_id());
+                
 
                 pst.executeUpdate();
 
                 try (ResultSet rst = pst.getGeneratedKeys()) {
                     while (rst.next()) {
-                        reservas.setId(rst.getInt(1));
+                        registro.setId(rst.getInt(1));
                     }
                 }
             }

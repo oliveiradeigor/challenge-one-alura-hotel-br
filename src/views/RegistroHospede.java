@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
+import conntroller.RegistroController;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -24,6 +25,8 @@ import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
+import modelo.Registros;
+import static views.ReservasView.txtDataE;
 
 @SuppressWarnings("serial")
 public class RegistroHospede extends JFrame {
@@ -38,6 +41,9 @@ public class RegistroHospede extends JFrame {
     private JLabel labelExit;
     private JLabel labelAtras;
     int xMouse, yMouse;
+
+    //cria
+    private RegistroController registroController;
 
     /**
      * Launch the application.
@@ -59,6 +65,9 @@ public class RegistroHospede extends JFrame {
      * Create the frame.
      */
     public RegistroHospede() {
+
+        //instancia
+        this.registroController = new RegistroController();
 
         setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroHospede.class.getResource("/imagenes/lOGO-50PX.png")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -287,6 +296,18 @@ public class RegistroHospede extends JFrame {
         btnsalvar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (txtNome.getText().equals("")
+                        && txtSobrenome.getText().equals("")
+                        && txtDataN.getDate() == null) {
+
+                    
+                    JOptionPane.showMessageDialog(null, "Deve preencher todos os campos.");
+
+                } else {
+                    //chamada do método
+                    salvarRegistro();
+                }
+
             }
         });
         btnsalvar.setLayout(null);
@@ -328,6 +349,30 @@ public class RegistroHospede extends JFrame {
         int x = evt.getXOnScreen();
         int y = evt.getYOnScreen();
         this.setLocation(x - xMouse, y - yMouse);
+    }
+
+    public void salvarRegistro() {
+        String nome = txtNome.getText();
+
+        String sobrenome = txtSobrenome.getText();
+
+        String dataNascimento = ((JTextField) txtDataN.getDateEditor().getUiComponent()).getText();
+
+        String telefone = txtTelefone.getText();
+
+        String reservas_id_string = txtNreserva.getText();
+
+        /*Regitros registro = new Registros(java.sql.Date.valueOf(dataEntrada), java.sql.Date.valueOf(dataSaida), Integer.parseInt(valor), txtFormaPagamento.getSelectedItem().toString());*/
+        Registros registro = new Registros(nome,
+                sobrenome,
+                java.sql.Date.valueOf(dataNascimento),
+                txtNacionalidade.getSelectedItem().toString(),
+                telefone,
+                Integer.parseInt(reservas_id_string)
+        );
+
+        registroController.salvar(registro);
+        JOptionPane.showMessageDialog(contentPane, "Registrado Com Sucesso!");
     }
 
 }
