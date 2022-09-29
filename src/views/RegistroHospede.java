@@ -26,6 +26,7 @@ import java.awt.Toolkit;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
 import modelo.Registros;
+import modelo.Reservas;
 import static views.ReservasView.txtDataE;
 
 @SuppressWarnings("serial")
@@ -54,6 +55,7 @@ public class RegistroHospede extends JFrame {
                 try {
                     RegistroHospede frame = new RegistroHospede();
                     frame.setVisible(true);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -300,12 +302,15 @@ public class RegistroHospede extends JFrame {
                         && txtSobrenome.getText().equals("")
                         && txtDataN.getDate() == null) {
 
-                    
                     JOptionPane.showMessageDialog(null, "Deve preencher todos os campos.");
 
                 } else {
+                    
                     //chamada do método
                     salvarRegistro();
+                    
+                    //chamando método limpar campos
+                    limparCampos();
                 }
 
             }
@@ -362,7 +367,6 @@ public class RegistroHospede extends JFrame {
 
         String reservas_id_string = txtNreserva.getText();
 
-        /*Regitros registro = new Registros(java.sql.Date.valueOf(dataEntrada), java.sql.Date.valueOf(dataSaida), Integer.parseInt(valor), txtFormaPagamento.getSelectedItem().toString());*/
         Registros registro = new Registros(nome,
                 sobrenome,
                 java.sql.Date.valueOf(dataNascimento),
@@ -373,6 +377,15 @@ public class RegistroHospede extends JFrame {
 
         registroController.salvar(registro);
         JOptionPane.showMessageDialog(contentPane, "Registrado Com Sucesso!");
+    }
+
+    public void limparCampos() {
+        
+        txtNome.setText(null);
+        txtSobrenome.setText(null);
+        txtTelefone.setText(null);
+        txtNreserva.setText(null);
+        ((JTextField) txtDataN.getDateEditor().getUiComponent()).setText(null);
     }
 
 }
