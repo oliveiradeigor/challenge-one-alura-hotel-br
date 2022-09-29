@@ -306,10 +306,12 @@ public class ReservasView extends JFrame {
                 if (ReservasView.txtDataE.getDate() != null && ReservasView.txtDataS.getDate() != null) {
                     //chamada da função
                     salvarReserva();
-                    
-                    /*RegistroHospede registro = new RegistroHospede();
-                    registro.setVisible(true);*/
-                    
+
+                    RegistroHospede registro = new RegistroHospede();
+                    registro.setVisible(true);
+
+                    dispose();
+
                 } else {
                     JOptionPane.showMessageDialog(null, "Deve preencher todos os campos.");
                 }
@@ -342,6 +344,8 @@ public class ReservasView extends JFrame {
         reservasController.salvar(reserva);
 
         JOptionPane.showMessageDialog(contentPane, "Registrado Com Sucesso!");
+        
+        JOptionPane.showMessageDialog(contentPane, "número da reserva: " + reserva.getId());
 
     }
 
