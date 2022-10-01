@@ -1,6 +1,7 @@
 package views;
 
 import conntroller.RegistroHospedesController;
+import conntroller.ReservasController;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -24,6 +25,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.RegistrosHospedes;
+import modelo.Reservas;
 
 @SuppressWarnings("serial")
 public class Buscar extends JFrame {
@@ -39,6 +41,7 @@ public class Buscar extends JFrame {
     int xMouse, yMouse;
 
     private RegistroHospedesController registroHospedesController;
+    private ReservasController reservasController;
 
     /**
      * Launch the application.
@@ -60,7 +63,9 @@ public class Buscar extends JFrame {
      * Create the frame.
      */
     public Buscar() throws SQLException {
+
         this.registroHospedesController = new RegistroHospedesController();
+        this.reservasController = new ReservasController();
 
         setIconImage(Toolkit.getDefaultToolkit().getImage(Buscar.class.getResource("/imagenes/lOGO-50PX.png")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -154,6 +159,7 @@ public class Buscar extends JFrame {
             }*/
         //Preenche a tabela de hospedes
         preencherHospedes();
+        preencherReservas();
 
         JLabel lblNewLabel_2 = new JLabel("");
         lblNewLabel_2.setIcon(new ImageIcon(Buscar.class.getResource("/imagenes/Ha-100px.png")));
@@ -337,6 +343,22 @@ public class Buscar extends JFrame {
             }
         } catch (Exception e) {
             throw e;
+        }
+    }
+
+    private void preencherReservas() throws SQLException {
+        List<Reservas> reservas = reservasController.listarReservas();
+        try {
+            reservas.forEach(elemento -> {
+                modelo.addRow(new Object[]{
+                    elemento.getId(),
+                    elemento.getDataEntrada(),
+                    elemento.getDataSaida(),
+                    elemento.getValor(),
+                    elemento.getFormaPagamento()
+                });
+            });
+        } catch (Exception e) {
         }
     }
 

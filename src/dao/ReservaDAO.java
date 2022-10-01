@@ -8,6 +8,9 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import modelo.Reservas;
 import org.mariadb.jdbc.Statement;
 
@@ -44,5 +47,28 @@ public class ReservaDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Reservas> listar() throws SQLException {
+        List<Reservas> listaReservas = new ArrayList<>();
+        String sql = "SELECT * FROM reservas";
+
+        try (PreparedStatement pstm = connection.prepareStatement(sql)) {
+            pstm.execute();
+
+            try (ResultSet rst = pstm.getResultSet()) {
+                while (rst.next()) {
+                    Reservas reservas = new Reservas(
+                            rst.getInt(1),
+                            rst.getDate(2),
+                            rst.getDate(3),
+                            rst.getInt(4),
+                            rst.getString(5)
+                    );
+                    listaReservas.add(reservas);
+                }
+            }
+        }
+        return listaReservas;
     }
 }

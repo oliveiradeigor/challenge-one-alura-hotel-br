@@ -8,6 +8,8 @@ package conntroller;
 import dao.ReservaDAO;
 import factory.ConnectionFactory;
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 import modelo.Reservas;
 
 /**
@@ -24,5 +26,9 @@ public class ReservasController {
     
     public void salvar(Reservas reserva){
         this.reservaDAO.salvar(reserva);
+    }
+    
+    public List<Reservas> listarReservas() throws SQLException{
+        return this.reservaDAO.listar();
     }
 }
