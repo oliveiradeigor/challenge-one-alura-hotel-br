@@ -1,5 +1,6 @@
 package views;
 
+import conntroller.RegistroHospedesController;
 import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,6 +20,10 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import modelo.RegistrosHospedes;
 
 @SuppressWarnings("serial")
 public class Buscar extends JFrame {
@@ -32,6 +37,8 @@ public class Buscar extends JFrame {
     private JLabel labelAtras;
     private JLabel labelExit;
     int xMouse, yMouse;
+
+    private RegistroHospedesController registroHospedesController;
 
     /**
      * Launch the application.
@@ -52,7 +59,9 @@ public class Buscar extends JFrame {
     /**
      * Create the frame.
      */
-    public Buscar() {
+    public Buscar() throws SQLException {
+        this.registroHospedesController = new RegistroHospedesController();
+
         setIconImage(Toolkit.getDefaultToolkit().getImage(Buscar.class.getResource("/imagenes/lOGO-50PX.png")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 910, 571);
@@ -97,14 +106,54 @@ public class Buscar extends JFrame {
         tbHospedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         tbHospedes.setFont(new Font("Roboto", Font.PLAIN, 16));
         panel.addTab("Hóspedes", new ImageIcon(Buscar.class.getResource("/imagenes/pessoas.png")), tbHospedes, null);
+
+        //
+        /*tbHospedes.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                System.out.println("gozei");
+
+            }
+        });*/
         modeloHospedes = (DefaultTableModel) tbHospedes.getModel();
-        modeloHospedes.addColumn("Numero de Hóspede");
+        /*modeloHospedes.addColumn("Numero de Hóspede");
         modeloHospedes.addColumn("Nome");
         modeloHospedes.addColumn("Sobrenome");
         modeloHospedes.addColumn("Data de Nascimento");
         modeloHospedes.addColumn("Nacionalidade");
         modeloHospedes.addColumn("Telefone");
-        modeloHospedes.addColumn("Numero de Reserva");
+        modeloHospedes.addColumn("Numero de Reserva");*/
+
+        modeloHospedes.addColumn("Id");
+        modeloHospedes.addColumn("Nome");
+        modeloHospedes.addColumn("Sobrenome");
+        modeloHospedes.addColumn("data_nascimento");
+        modeloHospedes.addColumn("nacionalidade");
+        modeloHospedes.addColumn("telefone");
+        modeloHospedes.addColumn("Id Reserva");
+
+        /*List<String> listaLinhas = new ArrayList<String>();
+        for (String nomes : listaLinhas) {
+            modeloHospedes.addRow(new String[]{
+                nomes = "igor",
+                nomes = "cu"
+            });
+        }*/
+        //List<RegistrosHospedes> hospedes = registroHospedesController.listarHospedes();
+        /*for (RegistrosHospedes rhs : hospedes) {
+                modeloHospedes.addRow(new Object[]{
+                    rhs.getId(),
+                    rhs.getNome(),
+                    rhs.getSobrenome(),
+                    rhs.getDataNascimento(),
+                    rhs.getNacionalidade(),
+                    rhs.getTelefone(),
+                    rhs.getReservas_id()
+                });
+            }*/
+        //Preenche a tabela de hospedes
+        preencherHospedes();
 
         JLabel lblNewLabel_2 = new JLabel("");
         lblNewLabel_2.setIcon(new ImageIcon(Buscar.class.getResource("/imagenes/Ha-100px.png")));
@@ -116,6 +165,7 @@ public class Buscar extends JFrame {
             @Override
             public void mouseDragged(MouseEvent e) {
                 headerMouseDragged(e);
+                System.out.println("goza");
 
             }
         });
@@ -123,6 +173,8 @@ public class Buscar extends JFrame {
             @Override
             public void mousePressed(MouseEvent e) {
                 headerMousePressed(e);
+                System.out.println("esperma");
+
             }
         });
         header.setLayout(null);
@@ -137,6 +189,7 @@ public class Buscar extends JFrame {
                 MenuUsuario usuario = new MenuUsuario();
                 usuario.setVisible(true);
                 dispose();
+
             }
 
             @Override
@@ -169,12 +222,14 @@ public class Buscar extends JFrame {
                 MenuUsuario usuario = new MenuUsuario();
                 usuario.setVisible(true);
                 dispose();
+
             }
 
             @Override
             public void mouseEntered(MouseEvent e) { // Quando o usuário passa o mouse sobre o botão, ele muda de cor
                 btnexit.setBackground(Color.red);
                 labelExit.setForeground(Color.white);
+
             }
 
             @Override
@@ -206,6 +261,7 @@ public class Buscar extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
 
+                //BOTÃO BUSCAR
             }
         });
         btnbuscar.setLayout(null);
@@ -249,6 +305,7 @@ public class Buscar extends JFrame {
         lblExcluir.setBounds(0, 0, 122, 35);
         btnDeletar.add(lblExcluir);
         setResizable(false);
+
     }
 
     //Código que permite movimentar a janela pela tela seguindo a posição de "x" e "y"	
@@ -262,4 +319,32 @@ public class Buscar extends JFrame {
         int y = evt.getYOnScreen();
         this.setLocation(x - xMouse, y - yMouse);
     }
+
+    private void preencherHospedes() throws SQLException {
+        List<RegistrosHospedes> hospedes = registroHospedesController.listarHospedes();
+        try {
+            for (RegistrosHospedes rhs : hospedes) {
+
+                modeloHospedes.addRow(new Object[]{
+                    rhs.getId(),
+                    rhs.getNome(),
+                    rhs.getSobrenome(),
+                    rhs.getDataNascimento(),
+                    rhs.getNacionalidade(),
+                    rhs.getTelefone(),
+                    rhs.getReservas_id()
+                });
+            }
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    /*private List<RegistrosHospedes> listarHospede() {
+        return this.registroHospedesController.listar();
+    }*/
+    private void limparTabela() {
+        modelo.getDataVector().clear();
+    }
+
 }

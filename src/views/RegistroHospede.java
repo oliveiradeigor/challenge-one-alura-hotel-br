@@ -7,7 +7,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTextField;
 import java.awt.Color;
 import com.toedter.calendar.JDateChooser;
-import conntroller.RegistroController;
+import conntroller.RegistroHospedesController;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JLabel;
@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.Toolkit;
 import javax.swing.SwingConstants;
 import javax.swing.JSeparator;
-import modelo.Registros;
+import modelo.RegistrosHospedes;
 import modelo.Reservas;
 import static views.ReservasView.txtDataE;
 
@@ -44,7 +44,7 @@ public class RegistroHospede extends JFrame {
     int xMouse, yMouse;
 
     //cria
-    private RegistroController registroController;
+    private RegistroHospedesController registroController;
 
     /**
      * Launch the application.
@@ -69,7 +69,7 @@ public class RegistroHospede extends JFrame {
     public RegistroHospede() {
 
         //instancia
-        this.registroController = new RegistroController();
+        this.registroController = new RegistroHospedesController();
 
         setIconImage(Toolkit.getDefaultToolkit().getImage(RegistroHospede.class.getResource("/imagenes/lOGO-50PX.png")));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -367,7 +367,7 @@ public class RegistroHospede extends JFrame {
 
         String reservas_id_string = txtNreserva.getText();
 
-        Registros registro = new Registros(nome,
+        RegistrosHospedes registro = new RegistrosHospedes(nome,
                 sobrenome,
                 java.sql.Date.valueOf(dataNascimento),
                 txtNacionalidade.getSelectedItem().toString(),

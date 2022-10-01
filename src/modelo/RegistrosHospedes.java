@@ -11,7 +11,7 @@ import java.sql.Date;
  *
  * @author igor
  */
-public class Registros {
+public class RegistrosHospedes {
 
     private int id;
     private String nome;
@@ -21,7 +21,7 @@ public class Registros {
     private String telefone;
     private int reservas_id;
 
-    public Registros(int id, String nome, String sobrenome, Date dataNascimento, String nacionalidade, String telefone, int reservas_id) {
+    public RegistrosHospedes(int id, String nome, String sobrenome, Date dataNascimento, String nacionalidade, String telefone, int reservas_id) {
         this.id = id;
         this.nome = nome;
         this.sobrenome = sobrenome;
@@ -31,13 +31,21 @@ public class Registros {
         this.reservas_id = reservas_id;
     }
 
-    public Registros(String nome, String sobrenome, Date dataNascimento, String nacionalidade, String telefone, int reservas_id) {
+    public RegistrosHospedes(String nome, String sobrenome, Date dataNascimento, String nacionalidade, String telefone, int reservas_id) {
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.dataNascimento = dataNascimento;
         this.nacionalidade = nacionalidade;
         this.telefone = telefone;
         this.reservas_id = reservas_id;
+    }
+    
+    public RegistrosHospedes(String nome){
+        this.nome = nome;
+    }
+
+    public RegistrosHospedes() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public int getId() {
